@@ -9,7 +9,7 @@ from sys import maxint, exit
 
 #create new account
 def create_request(conn):
-    
+
     print "CREATING AN ACCOUNT \n"
     print "enter a starting balance:"
     while True:
@@ -20,23 +20,23 @@ def create_request(conn):
         if(netBuffer >= 0 and netBuffer < maxint):
             bal = netBuffer
             break
-        
+
     print "enter a an account number 1-100(input 0 for a random number):"
     while True:
         try:
             netBuffer = int(raw_input('>> '))
         except ValueError:
             continue
-        
+
         if(netBuffer > 0 and netBuffer <= 100):
             act = netBuffer
             break
         elif(netBuffer == 0):
             act = -1
             break
-    
+
     send_message('\x01' + pack('!I',8) + '\x10' + pack('!II',bal,act),conn)
-    
+
     return
 
 #delete an existing account
@@ -48,11 +48,11 @@ def delete_request(conn):
             netBuffer = int(raw_input('>> '))
         except ValueError:
             continue
-        
+
         if(netBuffer > 0 and netBuffer <= 100):
             act = netBuffer
             break
-    
+
     send_message('\x01' + pack('!I',4) + '\x20' + pack('!I',act),conn)
     return
 
@@ -65,7 +65,7 @@ def deposit_request(conn):
             netBuffer = int(raw_input('>> '))
         except ValueError:
             continue
-        
+
         if(netBuffer > 0 and netBuffer <= 100):
             act = netBuffer
             break
@@ -78,7 +78,7 @@ def deposit_request(conn):
         if(netBuffer >= 0 and netBuffer < maxint):
             bal = netBuffer
             break
-        
+
     send_message('\x01' + pack('!I',8) + '\x30' + pack('!II',act,bal),conn)
     return
 
@@ -91,11 +91,11 @@ def withdraw_request(conn):
             netBuffer = int(raw_input('>> '))
         except ValueError:
             continue
-        
+
         if(netBuffer > 0 and netBuffer <= 100):
             act = netBuffer
             break
-        
+
     print "enter an amount to withdraw:"
     while True:
         try:
@@ -105,7 +105,7 @@ def withdraw_request(conn):
         if(netBuffer >= 0 and netBuffer < maxint):
             bal = netBuffer
             break
-        
+
     send_message('\x01' + pack('!I',8) + '\x40' + pack('!II',act,bal),conn)
     return
 
@@ -118,7 +118,7 @@ def balance_request(conn):
             netBuffer = int(raw_input('>> '))
         except ValueError:
             continue
-        
+
         if(netBuffer > 0 and netBuffer <= 100):
             act = netBuffer
             break

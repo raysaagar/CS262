@@ -7,7 +7,7 @@ Altered Feb 20, 2014
 from struct import pack
 
 def general_failure(conn, type, reason):
-    
+
     #find the appropriate opcode to send for particular errors
     if type == 'create':
         typebyte = '\x12'
@@ -19,7 +19,7 @@ def general_failure(conn, type, reason):
         typebyte = '\x42'
     elif type == 'balance':
         typebyte = '\x52'
-    
+
     #encode and send the string
     utf = reason.encode('utf-8')
     utflen = len(utf)

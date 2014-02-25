@@ -14,7 +14,7 @@ from struct import unpack
 
 #opcode associations; note that these opcodes will be returned by the serverzl;khjapoiwpe
 opcodes = {'\x11': create_success,
-           '\x12': general_failure,  
+           '\x12': general_failure,
            '\x21': delete_success,
            '\x22': general_failure,
            '\x31': deposit_success,
@@ -44,29 +44,29 @@ def processInput(netBuffer, mySocket):
     #create
     if netBuffer == str(1):
         create_request(mySocket)
-        
+
     #delete
     elif netBuffer == str(2):
         delete_request(mySocket)
-        
+
     #deposit
     elif netBuffer == str(3):
         deposit_request(mySocket)
-        
+
     #withdraw
     elif netBuffer == str(4):
         withdraw_request(mySocket)
-        
+
     #balance
     elif netBuffer == str(5):
         balance_request(mySocket)
-        
+
     #quit
     elif netBuffer == str(6):
         end_session(mySocket)
-        
+
     return
-        
+
 def getResponse(mySocket):
     #wait for server responses...
     while True:
@@ -76,9 +76,9 @@ def getResponse(mySocket):
             #close the client if the connection is down
             print "ERROR: connection down"
             sys.exit()
-            
+
         if len(retBuffer) != 0:
-            
+
             header = unpack('!cIc',retBuffer[0:6])
             #only allow correct version numbers
             if header[0] == version:
@@ -91,12 +91,12 @@ def getResponse(mySocket):
             #mySocket.send ('\x01\x01\x02\x03\x53\x10\x12\x34')
             break
         return
-    
+
 if __name__ == '__main__':
     if(len(sys.argv) != 3):
         print "ERROR: Usage 'python myClient.py <host> <port>'"
         sys.exit()
-        
+
     #get the address of the server
     myHost = sys.argv[1]
     myPort = sys.argv[2]
