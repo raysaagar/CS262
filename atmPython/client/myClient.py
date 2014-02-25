@@ -12,7 +12,7 @@ from myClientReceive import *
 import sys
 from struct import unpack
 
-#opcode associations; note that these opcodes will be returned by the serverzl;khjapoiwpe
+#opcode associations; note that these opcodes will be returned by the server
 opcodes = {'\x11': create_success,
            '\x12': general_failure,
            '\x21': delete_success,
