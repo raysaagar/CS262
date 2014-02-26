@@ -59,7 +59,7 @@ def delete_request(conn):
 #deposit to an existing account
 def deposit_request(conn):
     print "DEPOSITING SOME DOUGH \n"
-    print "enter a an account number 1-100:"
+    print "enter an account number 1-100:"
     while True:
         try:
             netBuffer = int(raw_input('>> '))
@@ -85,7 +85,7 @@ def deposit_request(conn):
 #withdraw from an existing account
 def withdraw_request(conn):
     print "WITHDRAWING SOME DOUGH \n"
-    print "enter a an account number 1-100:"
+    print "enter an account number 1-100:"
     while True:
         try:
             netBuffer = int(raw_input('>> '))
@@ -112,7 +112,7 @@ def withdraw_request(conn):
 #withdraw from an existing account
 def balance_request(conn):
     print "CHECKING THE BALANCE OF AN ACCOUNT \n"
-    print "enter a an account number 1-100:"
+    print "enter an account number 1-100:"
     while True:
         try:
             netBuffer = int(raw_input('>> '))
