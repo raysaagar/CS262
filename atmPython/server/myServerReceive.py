@@ -184,6 +184,3 @@ def end_session(conn,netBuffer,myData,lock):
     end_session_success(conn)
     conn.close()
     return
-
-
-

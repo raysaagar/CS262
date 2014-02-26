@@ -1,4 +1,5 @@
 from lxml import etree
+from hashlib import sha384
 
 class XMLPackage(object):
 
@@ -10,10 +11,6 @@ class XMLPackage(object):
         version_elm = etree.Element('version')
         version_elm.text = str(version)
         root.append(version_elm)
-
-        content_length_elm = etree.Element('content_length')
-        content_length_elm.text = ''
-        root.append(content_length_elm)
 
         opcode_elm = etree.Element('opcode')
         opcode_elm.text = str(opcode)
@@ -29,14 +26,16 @@ class XMLPackage(object):
 
         root.append(arguments_elm)
 
-        without_length = etree.tostring(root)
+        # get a checksum of everything without checksum tag
+        pre_checksum = etree.tostring(root)
+        checksum = sha384(pre_checksum)
 
-        ''' Find number of digits of string without content length, and then
-            add the number of digits with content length
-        '''
-        content_length = len(without_length) + len(str(len(without_length)))
-        content_length_elm.text = str(content_length)
+        checksum_elm = etree.Element('checksum')
+        checksum_elm.text = checksum.hexdigest()
+        root.append(checksum_elm)
 
         s = etree.tostring(root)
 
         return s
+
+print XMLPackage.client_package(1.0, 5, ["hey", "saagar"])
