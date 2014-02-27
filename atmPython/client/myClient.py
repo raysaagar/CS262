@@ -31,7 +31,7 @@ opcodes = { 11: create_success,
 
 def getInput():
     print '''
-CONNECTED TO ATM SERVER - type the number of a function:
+CONNECTED TO WALDOvia BANK SERVER - type the number of a function:
     (1) Create Account
     (2) Delete Account
     (3) Deposit Money to an Account
@@ -65,6 +65,9 @@ def processInput(netBuffer, mySocket):
 
     #quit
     elif netBuffer == str(6):
+        end_session(mySocket)
+    
+    else:
         end_session(mySocket)
 
     return
