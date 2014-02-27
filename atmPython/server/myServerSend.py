@@ -27,7 +27,7 @@ def general_failure(conn, type, reason):
     #utf = reason.encode('utf-8')
     #utflen = len(utf)
     #conn.send('\x01' + pack('!I',2 + utflen) + typebyte + pack('!h',utflen) + utf)
-    conn.send(version, typebyte, reason.encode('utf-8'), True)
+    conn.send(xml.server_package(version, typeint, reason.encode('utf-8'), True))
     return
 
 #create new account
@@ -64,7 +64,7 @@ def balance_success(conn,bal):
 #end a session
 def end_session_success(conn):
     #conn.send('\x01\x00\x00\x00\x00\x61')
-    conn.send(xml.server_package(version, 61, bal, False))
+    conn.send(xml.server_package(version, 61, '', False))
     return
 
 #handle invalid opcodes

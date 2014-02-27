@@ -20,12 +20,12 @@ class XMLClientPackage(object):
         if len(arguments) > 0:
             arguments_elm = etree.Element('arguments')
 
-        for arg in arguments:
-            arg_elm = etree.Element('arg')
-            arg_elm.text = str(arg)
-            arguments_elm.append(arg_elm)
+            for arg in arguments:
+                arg_elm = etree.Element('arg')
+                arg_elm.text = str(arg)
+                arguments_elm.append(arg_elm)
 
-        root.append(arguments_elm)
+            root.append(arguments_elm)
 
         # get a checksum of everything without checksum tag
         pre_checksum = etree.tostring(root)

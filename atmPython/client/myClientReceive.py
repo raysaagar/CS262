@@ -8,8 +8,8 @@ from sys import exit
 
 #handle errors from server side.
 def general_failure(conn, xml):
-    status = xml.find('status').text
-    print "\nERROR: " + status
+    reason = xml.find('error').text
+    print "\nERROR: " + reason
     return
 
 #create new account

@@ -15,7 +15,7 @@ import thread
 import xml.etree.ElementTree as ET
 from XMLvalidator import XMLValidate as val
 
-version = '\x01'
+version = '0.0.1'
 #opcode associations
 opcodes = {10: myServerReceive.create_request,
            20: myServerReceive.delete_request,
