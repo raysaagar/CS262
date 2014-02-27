@@ -17,12 +17,12 @@ from XMLvalidator import XMLValidate as val
 
 version = '\x01'
 #opcode associations
-opcodes = {1: myServerReceive.create_request,
-           2: myServerReceive.delete_request,
-           3: myServerReceive.deposit_request,
-           4: myServerReceive.withdraw_request,
-           5: myServerReceive.balance_request,
-           6: myServerReceive.end_session
+opcodes = {10: myServerReceive.create_request,
+           20: myServerReceive.delete_request,
+           30: myServerReceive.deposit_request,
+           40: myServerReceive.withdraw_request,
+           50: myServerReceive.balance_request,
+           60: myServerReceive.end_session
            }
 
 def recordConnect(log, addr):

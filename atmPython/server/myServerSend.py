@@ -13,15 +13,15 @@ def general_failure(conn, type, reason):
 
     #find the appropriate opcode to send for particular errors
     if type == 'create':
-        typebyte = '\x12'
+        typeint = 12
     elif type == 'delete':
-        typebyte = '\x22'
+        typeint = 22
     elif type == 'deposit':
-        typebyte = '\x32'
+        typeint = 32
     elif type == 'withdraw':
-        typebyte = '\x42'
+        typeint = 42
     elif type == 'balance':
-        typebyte = '\x52'
+        typeint = 52
 
     #encode and send the string
     #utf = reason.encode('utf-8')
@@ -34,43 +34,43 @@ def general_failure(conn, type, reason):
 def create_success(conn,act):
     #xml = server_package(version, 4, act, False)
     #conn.send('\x01' + pack('!I',4) +'\x11' + pack('!I',act))
-    conn.send(server_package(version, '\x11', act, False)
+    conn.send(xml.server_package(version, 11, act, False))
     return
 
 #delete an existing account
 def delete_success(conn):
     #conn.send('\x01\x00\x00\x00\x00\x21')
-    conn.send(server_package(version, '\x21', "account deleted", False))
+    conn.send(xml.server_package(version, 21, '', False))
     return
 
 #deposit to an existing account
 def deposit_success(conn,bal):
     #conn.send('\x01' + pack('!I',4) +'\x31' + pack('!I',bal))
-    conn.send(server_package(version, '\x31', bal, False)
+    conn.send(xml.server_package(version, 31, bal, False))
     return
 
 #withdraw from an existing account
 def withdraw_success(conn,bal):
     #conn.send('\x01' + pack('!I',4) +'\x41' + pack('!I',bal))
-    conn.send(server_package(version, '\x41', bal, False)
+    conn.send(xml.server_package(version, 41, bal, False))
     return
 
 #withdraw from an existing account
 def balance_success(conn,bal):
     #conn.send('\x01' + pack('!I',4) +'\x51' + pack('!I',bal))
-    conn.send(server_package(version, '\x51', bal, False)
+    conn.send(xml.server_package(version, 51, bal, False))
     return
 
 #end a session
 def end_session_success(conn):
     #conn.send('\x01\x00\x00\x00\x00\x61')
-    conn.send(server_package(version, '\x61', bal, False)
+    conn.send(xml.server_package(version, 61, bal, False))
     return
 
 #handle invalid opcodes
 def unknown_opcode(conn):
     #conn.send('\x01\x00\x00\x00\x00\x62')
-    conn.send(server_package(version, '\x61', "unknown opcode", False)
+    conn.send(xml.server_package(version, 62, "unknown opcode", False))
     return
 
 

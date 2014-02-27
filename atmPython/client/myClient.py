@@ -4,27 +4,29 @@ Created on Feb 18, 2010
 Altered Feb. 20, 2014
 '''
 
-version = '\x01'
+version = '0.0.1'
 
 import socket
 from myClientSend import *
 from myClientReceive import *
 import sys
 from struct import unpack
+import xml.etree.ElementTree as ET
+from XMLvalidator import XMLValidate as val
 
 #opcode associations; note that these opcodes will be returned by the server
-opcodes = {'\x11': create_success,
-           '\x12': general_failure,
-           '\x21': delete_success,
-           '\x22': general_failure,
-           '\x31': deposit_success,
-           '\x32': general_failure,
-           '\x41': withdraw_success,
-           '\x42': general_failure,
-           '\x51': balance_success,
-           '\x52': general_failure,
-           '\x61': end_session_success,
-           '\x62': unknown_opcode
+opcodes = { 11: create_success,
+            12: general_failure,
+            21: delete_success,
+            22: general_failure,
+            31: deposit_success,
+            32: general_failure,
+            41: withdraw_success,
+            42: general_failure,
+            51: balance_success,
+            52: general_failure,
+            61: end_session_success,
+            62: unknown_opcode
            }
 
 def getInput():
@@ -68,26 +70,32 @@ def processInput(netBuffer, mySocket):
     return
 
 def getResponse(mySocket):
+
     #wait for server responses...
     while True:
         try:
             retBuffer = mySocket.recv( 1024 )
         except:
+
             #close the client if the connection is down
             print "ERROR: connection down"
             sys.exit()
 
         if len(retBuffer) != 0:
 
-            header = unpack('!cIc',retBuffer[0:6])
-            #only allow correct version numbers
-            if header[0] == version:
-                opcode = header[2]
-                #send packet to correct handler
+            # parse the buffer string into xml format
+            xml = ET.fromstring(retBuffer)
+
+            # only allow correct version numbers and checksums
+            if val.validate(xml):
+
+                # send packet to correct handler
                 try:
-                    opcodes[opcode](mySocket,retBuffer)
+                    opcode = int(xml.find('status').text)
+                    opcodes[opcode](mySocket,xml)
                 except KeyError:
                     break
+
             #mySocket.send ('\x01\x01\x02\x03\x53\x10\x12\x34')
             break
         return

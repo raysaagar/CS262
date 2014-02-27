@@ -7,43 +7,42 @@ from struct import unpack
 from sys import exit
 
 #handle errors from server side.
-def general_failure(conn, netBuffer):
-    values = unpack('!h',netBuffer[6:8])
-    strlen = values[0]
-    print "\nERROR: " + netBuffer[8:8+strlen]
+def general_failure(conn, xml):
+    status = xml.find('status').text
+    print "\nERROR: " + status
     return
 
 #create new account
-def create_success(conn, netBuffer):
-    values = unpack('!I',netBuffer[6:10])
-    print "Account creation successful " + str(values[0])
+def create_success(conn, xml):
+    value = xml.find('value').text
+    print "Account creation successful " + value
     return
 
 #delete an existing account
-def delete_success(conn, netBuffer):
+def delete_success(conn, xml):
     print "Account deletion successful"
     return
 
 #deposit to an existing account
-def deposit_success(conn,netBuffer):
-    values = unpack('!I',netBuffer[6:10])
-    print "Deposit success. The updated balance: " + str(values[0])
+def deposit_success(conn,xml):
+    value = xml.find('value').text
+    print "Deposit success. The updated balance: " + value
     return
 
 #withdraw from an existing account
-def withdraw_success(conn,netBuffer):
-    values = unpack('!I',netBuffer[6:10])
-    print "Withdrawal success. The updated balance: " + str(values[0])
+def withdraw_success(conn,xml):
+    value = xml.find('value').text
+    print "Withdrawal success. The updated balance: " + value
     return
 
 #withdraw from an existing account
-def balance_success(conn,netBuffer):
-    values = unpack('!I',netBuffer[6:10])
-    print "The balance of that account is: " + str(values[0])
+def balance_success(conn,xml):
+    value = xml.find('value').text
+    print "The balance of that account is: " + value
     return
 
 #end a session
-def end_session_success(conn,netBuffer):
+def end_session_success(conn,xml):
     print "SHUTTING DOWN"
     conn.close()
     exit()

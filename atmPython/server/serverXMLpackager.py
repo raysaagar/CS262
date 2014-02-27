@@ -21,7 +21,7 @@ class XMLPackage(object):
             message_elm = etree.Element('error')
         else:
             message_elm = etree.Element('value')
-        message_elm.text = value
+        message_elm.text = str(value)
         root.append(message_elm)
 
         without_checksum = etree.tostring(root)
@@ -38,5 +38,3 @@ class XMLPackage(object):
         s = etree.tostring(root)
 
         return s
-print XMLPackage.server_package(1.0, 99, "blah", False)
-print XMLPackage.server_package(1.0, 99, "asdf", True)

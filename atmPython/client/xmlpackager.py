@@ -38,5 +38,3 @@ class XMLClientPackage(object):
         s = etree.tostring(root)
 
         return s
-
-print XMLClientPackage.client_package(1.0, 5, ["hey", "saagar"])

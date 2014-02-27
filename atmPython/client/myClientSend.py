@@ -35,7 +35,7 @@ def create_request(conn):
             break
     
     # should refactor opcodes
-    package = xml.client_package(version, 1, [act,bal])
+    package = xml.client_package(version, 10, [act,bal])
     send_message(package,conn)
 
     return
@@ -54,7 +54,7 @@ def delete_request(conn):
             act = netBuffer
             break
 
-    package = xml.client_package(version, 2, [act])
+    package = xml.client_package(version, 20, [act])
     send_message(package,conn)
     return
 
@@ -81,7 +81,7 @@ def deposit_request(conn):
             bal = netBuffer
             break
 
-    package = xml.client_package(version, 3, [act,bal])
+    package = xml.client_package(version, 30, [act,bal])
     send_message(package,conn)
     return
 
@@ -108,7 +108,7 @@ def withdraw_request(conn):
         if(netBuffer >= 0 and netBuffer < maxint):
             bal = netBuffer
             break
-    package = xml.client_package(version, 4, [act,bal])
+    package = xml.client_package(version, 40, [act,bal])
     send_message(package,conn)
     return
 
@@ -126,13 +126,13 @@ def balance_request(conn):
             act = netBuffer
             break
 
-    package = xml.client_package(version, 5, [act])
+    package = xml.client_package(version, 50, [act])
     send_message(package,conn)
     return
 
 #end a session
 def end_session(conn):
-    package = xml.client_package(version, 6, [])
+    package = xml.client_package(version, 60, [])
     send_message(package,conn)
     return
 
