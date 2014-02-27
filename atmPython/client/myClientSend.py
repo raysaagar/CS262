@@ -6,6 +6,9 @@ altered on Feb. 20, 2014
 
 from struct import pack
 from sys import maxint, exit
+from xmlpackager import XMLClientPackage as xml
+
+version = '0.0.1'
 
 #create new account
 def create_request(conn):
@@ -34,7 +37,11 @@ def create_request(conn):
         elif(netBuffer == 0):
             act = -1
             break
-
+    
+    # should refactor opcodes
+    package = xml.client_package(version, 0, [bal,act])
+    print package
+    # TODO send the xml!
     send_message('\x01' + pack('!I',8) + '\x10' + pack('!II',bal,act),conn)
 
     return
@@ -52,6 +59,10 @@ def delete_request(conn):
         if(netBuffer > 0 and netBuffer <= 100):
             act = netBuffer
             break
+
+    package = xml.client_package(version, 4, [act])
+    print package
+    # TODO send the package
 
     send_message('\x01' + pack('!I',4) + '\x20' + pack('!I',act),conn)
     return
@@ -79,6 +90,10 @@ def deposit_request(conn):
             bal = netBuffer
             break
 
+    package = xml.client_package(version, 2, [act,bal])
+    print package
+    # TODO send
+
     send_message('\x01' + pack('!I',8) + '\x30' + pack('!II',act,bal),conn)
     return
 
@@ -105,7 +120,9 @@ def withdraw_request(conn):
         if(netBuffer >= 0 and netBuffer < maxint):
             bal = netBuffer
             break
-
+    package = xml.client_package(version, 3, [act,bal])
+    print package
+    # TODO send
     send_message('\x01' + pack('!I',8) + '\x40' + pack('!II',act,bal),conn)
     return
 
@@ -122,6 +139,10 @@ def balance_request(conn):
         if(netBuffer > 0 and netBuffer <= 100):
             act = netBuffer
             break
+
+    package = xml.client_package(version, 2, [act])
+    print package
+    # TODO send
 
     send_message('\x01' + pack('!I',4) + '\x50' + pack('!I',act),conn)
     return

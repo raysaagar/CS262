@@ -1,9 +1,10 @@
 from lxml import etree
 from hashlib import sha384
 
-class XMLPackage(object):
+class XMLClientPackage(object):
 
     @staticmethod
+    # arguments is a list
     def client_package(version, opcode, arguments):
         # create XML
         root = etree.Element('request')
@@ -38,4 +39,4 @@ class XMLPackage(object):
 
         return s
 
-print XMLPackage.client_package(1.0, 5, ["hey", "saagar"])
+print XMLClientPackage.client_package(1.0, 5, ["hey", "saagar"])
