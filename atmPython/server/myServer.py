@@ -12,15 +12,17 @@ import myServerReceive
 import myServerSend
 from myServerSend import unknown_opcode
 import thread
+import xml.etree.ElementTree as ET
+from XMLvalidator import XMLValidate as val
 
 version = '\x01'
 #opcode associations
-opcodes = {'\x10': myServerReceive.create_request,
-           '\x20': myServerReceive.delete_request,
-           '\x30': myServerReceive.deposit_request,
-           '\x40': myServerReceive.withdraw_request,
-           '\x50': myServerReceive.balance_request,
-           '\x60': myServerReceive.end_session
+opcodes = {1: myServerReceive.create_request,
+           2: myServerReceive.delete_request,
+           3: myServerReceive.deposit_request,
+           4: myServerReceive.withdraw_request,
+           5: myServerReceive.balance_request,
+           6: myServerReceive.end_session
            }
 
 def recordConnect(log, addr):
@@ -41,14 +43,14 @@ def handler(conn,lock, myData):
             thread.exit()
         #if we receive a message...
         if len(netbuffer) >= 6:
-            #unpack it...
-            header = struct.unpack('!cIc',netbuffer[0:6])
+            # parse the xml
+            xml = ET.fromstring(netbuffer)
             #only allow correct version numbers and buffers that are of the appropriate length
-            if header[0] == version and len(netbuffer) == header[1] + 6:
-                opcode = header[2]
+            if val.validate(xml):
                 #try to send packet to correct handler
                 try:
-                    opcodes[opcode](conn,netbuffer,myData,lock)
+                    opcode = int(xml.find('opcode').text)
+                    opcodes[opcode](conn,xml,myData,lock)
                 #catch unhandled opcodes
                 except KeyError:
                     if(second_attempt):
