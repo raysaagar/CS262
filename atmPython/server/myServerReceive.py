@@ -35,7 +35,7 @@ def create_request(conn,xml,myData,lock):
 
     return
 
-#d elete an existing account
+# delete an existing account
 def delete_request(conn,xml,myData,lock):
     
     # get arguments from xml
@@ -145,7 +145,7 @@ def withdraw_request(conn,xml,myData,lock):
         print myData
     return
 
-#withdraw from an existing account
+# withdraw from an existing account
 def balance_request(conn,xml,myData,lock):
     
     #no need to lock: we are just reading a value from a dict, which is thread-safe
@@ -168,7 +168,7 @@ def balance_request(conn,xml,myData,lock):
 
     return
 
-#end a session
+# end a session
 def end_session(conn,xml,myData,lock):
     end_session_success(conn)
     conn.close()

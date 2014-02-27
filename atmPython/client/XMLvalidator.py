@@ -15,6 +15,7 @@ class XMLValidate(object):
 
 		# check that the checksum is correct
 		checksum = xml.find('checksum')
+
 		xml.remove(checksum)
 		without_checksum = ET.tostring(xml)
 		checksum_validate = sha384(without_checksum).hexdigest()

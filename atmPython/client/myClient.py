@@ -71,13 +71,13 @@ def processInput(netBuffer, mySocket):
 
 def getResponse(mySocket):
 
-    #wait for server responses...
+    # wait for server responses...
     while True:
         try:
             retBuffer = mySocket.recv( 1024 )
         except:
 
-            #close the client if the connection is down
+            # close the client if the connection is down
             print "ERROR: connection down"
             sys.exit()
 
@@ -96,7 +96,6 @@ def getResponse(mySocket):
                 except KeyError:
                     break
 
-            #mySocket.send ('\x01\x01\x02\x03\x53\x10\x12\x34')
             break
         return
 
