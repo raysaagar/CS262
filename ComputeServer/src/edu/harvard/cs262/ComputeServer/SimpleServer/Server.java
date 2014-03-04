@@ -11,6 +11,7 @@ import edu.harvard.cs262.ComputeServer.WorkTask;
 public class Server implements ComputeServer {
 	private static final long serialVersionUID = 1L;
 	public Server(){
+		super();
 	}
 	
 	@Override
@@ -20,6 +21,9 @@ public class Server implements ComputeServer {
 	
 	public static void main(String args[]){
 		try{
+			if (System.getSecurityManager()==null){
+				System.setSecurityManager(new SecurityManager());
+			}
 			Server mySrv = new Server();
 			ComputeServer stub = (ComputeServer)UnicastRemoteObject.exportObject(mySrv);
 			
