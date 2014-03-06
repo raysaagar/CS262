@@ -47,4 +47,9 @@ public class QueuedServer implements ComputeServer, WorkQueue {
 		return null;
 	}
 
+	@Override
+	public boolean PingServer() throws RemoteException {
+		return true;
+	}
+
 }

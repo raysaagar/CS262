@@ -11,8 +11,6 @@ package edu.harvard.cs262.ComputeServer;
  * cast into the correct form. There is a single method, {@code doWork()}, that
  * will be called by the receiver of the object to get the work done.
  * 
- * @author waldo
- * 
  */
 public interface WorkTask {
 	/**

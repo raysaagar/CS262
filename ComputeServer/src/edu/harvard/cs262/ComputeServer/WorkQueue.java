@@ -15,6 +15,14 @@ import java.util.UUID;
  * scaling of the compute server infrastructure by allowing others to register
  * and do work.</p>
  * 
+ * This interface does not provide a mechanism for a service implementing this
+ * interface to tell if the {@link ComputeServer} registered with the server is
+ * still alive. This could cause work to be assigned to a crashed server (which
+ * would end up throwing a {@link RemoteException}, or have the server waiting
+ * (potentially forever) for the completion of an assigned {@link WorkTask}
+ * forever. So their probably needs to be an extension of either this interface
+ * or the basic {@link ComputeServer} interface to allow such failure detection.
+ * 
  */
 public interface WorkQueue extends Remote {
 	/**
