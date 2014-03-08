@@ -32,7 +32,7 @@ public class Server implements ComputeServer {
 
 			ComputeServer stub = (ComputeServer)UnicastRemoteObject.exportObject(mySrv, 0);
 			
-			Registry registry = LocateRegistry.getRegistry("127.0.0.1", 8080);
+			Registry registry = LocateRegistry.createRegistry(8080);
 			registry.bind("SimpleServer", stub);
 			
 			System.out.println("Server ready");
