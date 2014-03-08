@@ -25,7 +25,7 @@ public class Server implements ComputeServer {
 				System.setSecurityManager(new SecurityManager());
 			}
 			Server mySrv = new Server();
-			// note - the tutorial is a bit dated, this doesn't require a port?
+
 			ComputeServer stub = (ComputeServer)UnicastRemoteObject.exportObject(mySrv, 0);
 			
 			Registry registry = LocateRegistry.getRegistry();
@@ -34,7 +34,7 @@ public class Server implements ComputeServer {
 			System.out.println("Server ready");
 		} catch (Exception e) {
 			System.err.println("[Server exception]: " + e.toString());
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 
