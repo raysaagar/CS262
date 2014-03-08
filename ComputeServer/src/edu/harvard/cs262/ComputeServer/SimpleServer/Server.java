@@ -33,6 +33,7 @@ public class Server implements ComputeServer {
 			System.out.println("Server ready");
 		} catch (Exception e) {
 			System.err.println("Server exception: " + e.toString());
+            e.printStackTrace();
 		}
 	}
 
