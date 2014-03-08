@@ -25,7 +25,7 @@ public class Server implements ComputeServer {
 				System.setSecurityManager(new SecurityManager());
 			}
 			Server mySrv = new Server();
-			ComputeServer stub = (ComputeServer)UnicastRemoteObject.exportObject(mySrv);
+			ComputeServer stub = (ComputeServer)UnicastRemoteObject.exportObject(mySrv, 0);
 			
 			Registry registry = LocateRegistry.getRegistry();
 			registry.bind("SimpleServer", stub);
