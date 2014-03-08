@@ -9,6 +9,7 @@ import edu.harvard.cs262.ComputeServer.ComputeServer;
 import edu.harvard.cs262.ComputeServer.WorkTask;
 
 public class Server implements ComputeServer {
+
 	private static final long serialVersionUID = 1L;
 	public Server(){
 		super();
@@ -21,6 +22,9 @@ public class Server implements ComputeServer {
 	
 	public static void main(String args[]){
 		try{
+
+            System.setProperty("java.security.policy", "security.policy");
+
 			if (System.getSecurityManager()==null){
 				System.setSecurityManager(new SecurityManager());
 			}
@@ -28,13 +32,13 @@ public class Server implements ComputeServer {
 
 			ComputeServer stub = (ComputeServer)UnicastRemoteObject.exportObject(mySrv, 0);
 			
-			Registry registry = LocateRegistry.getRegistry();
+			Registry registry = LocateRegistry.getRegistry("127.0.0.1", 8080);
 			registry.bind("SimpleServer", stub);
 			
 			System.out.println("Server ready");
 		} catch (Exception e) {
 			System.err.println("[Server exception]: " + e.toString());
-			//e.printStackTrace();
+            e.printStackTrace();
 		}
 	}
 
