@@ -31,16 +31,17 @@ public class Client {
             // hack to force compile
             Registry registry = null;
             try {
-            	System.out.println("Obtaining registry object from " + hostname + ":" + port);
             	registry = LocateRegistry.getRegistry(hostname, port);
-            	System.out.println("Success!");
             }
             catch (Exception e) {
             	System.out.println("Unable to connect to server " + hostname + ":" + port);
             	System.out.println(e);
             }
 
+            System.out.println("Obtaining registry object from " + hostname + ":" + port);
             ComputeServer comp = (ComputeServer) registry.lookup(name);
+            System.out.println("Success!");
+
             WorkTask work = new HelloTask("Hello");
             String response = (String) comp.sendWork(work);
             System.out.println(response);
