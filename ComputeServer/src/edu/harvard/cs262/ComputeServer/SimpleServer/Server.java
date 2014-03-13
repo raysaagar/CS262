@@ -21,6 +21,8 @@ public class Server implements ComputeServer {
 	}
 	
 	public static void main(String args[]){
+        int port = 8080;
+
 		try{
 
             System.setProperty("java.security.policy", "security.policy");
@@ -32,7 +34,7 @@ public class Server implements ComputeServer {
 
 			ComputeServer stub = (ComputeServer)UnicastRemoteObject.exportObject(mySrv, 0);
 			
-			Registry registry = LocateRegistry.createRegistry(8080);
+			Registry registry = LocateRegistry.createRegistry(port);
 			registry.bind("SimpleServer", stub);
 			
 			System.out.println("Server ready");
