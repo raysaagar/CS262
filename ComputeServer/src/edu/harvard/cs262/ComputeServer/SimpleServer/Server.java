@@ -21,7 +21,7 @@ public class Server implements ComputeServer {
 	}
 	
 	public static void main(String args[]){
-        int port = 8080;
+        int port = 1099;
 
 		try{
 
