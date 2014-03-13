@@ -9,11 +9,11 @@ import edu.harvard.cs262.ComputeServer.ComputeServer;
 import edu.harvard.cs262.ComputeServer.WorkTask;
 
 public class Client {
-	
+
 	/**
 	 * @param args
 	 */
-	
+
 	public static void main(String[] args) {
         String hostname = args[0];
 //		int port = Integer.parseInt(args[1]);
@@ -31,14 +31,15 @@ public class Client {
             // hack to force compile
             Registry registry = null;
             try {
-            	System.out.println("Establishing connection to server " + hostname + ":" + port);
+            	System.out.println("Obtaining registry object from " + hostname + ":" + port);
             	registry = LocateRegistry.getRegistry(hostname, port);
+            	System.out.println("Success!");
             }
             catch (Exception e) {
             	System.out.println("Unable to connect to server " + hostname + ":" + port);
             	System.out.println(e);
             }
-            
+
             ComputeServer comp = (ComputeServer) registry.lookup(name);
             WorkTask work = new HelloTask("Hello");
             String response = (String) comp.sendWork(work);
@@ -47,7 +48,7 @@ public class Client {
             System.err.println("Client exception: " + e.toString());
             e.printStackTrace();
         }
-		 
+
 	}
 
 }
