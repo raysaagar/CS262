@@ -10,45 +10,49 @@ import edu.harvard.cs262.ComputeServer.WorkTask;
 
 public class Client {
 
-	/**
-	 * @param args
-	 */
+    /**
+     * @param args
+     */
 
-	public static void main(String[] args) {
-        String hostname = args[0];
-        int port = 1099;
+    public static void main(String[] args) {
+        String queuedHostname = "rinchiera.com"; // Hostname of WorkQueue
+        int queuedPort        = 1099; // Port of WorkQueue
+        Registry registry     = null; // Necessary for compile
 
-		// TODO Auto-generated method stub
+        /* If WorkQueue is being operated by a different group */
+        if(args.length > 0) {
+            queuedHostname = args[0];
+        }
+
+        /* This policy is very unsafe. We don't implement remote so it should
+         * be fine. */
         System.setProperty("java.security.policy", "security.policy");
+        if (System.getSecurityManager()==null){
+            System.setSecurityManager(new SecurityManager());
+        }
 
-		if (System.getSecurityManager()==null){
-			System.setSecurityManager(new SecurityManager());
-		}
+        try {
 
-		 try {
-            String name = "QueuedServer";
-            // hack to force compile
-            Registry registry = null;
             try {
-            	registry = LocateRegistry.getRegistry(hostname, port);
+                registry = LocateRegistry.getRegistry(queuedHostname, queuedPort);
             }
             catch (Exception e) {
-            	System.out.println("Unable to connect to server " + hostname + ":" + port);
-            	System.out.println(e);
+                System.out.println("Unable to connect to WorkQueue server " + queuedHostname + ":" + queuedPort);
+                System.out.println(e);
             }
 
-            System.out.println("Obtaining registry object from " + hostname + ":" + port);
+            String name = "QueuedServer";
             ComputeServer comp = (ComputeServer) registry.lookup(name);
-            System.out.println("Success!");
 
             WorkTask work = new HelloTask("Hello");
             System.out.println("Sending work to server...");
             String response = (String) comp.sendWork(work);
             System.out.println("Response: " + response);
+
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
             e.printStackTrace();
         }
 
-	}
+    }
 }

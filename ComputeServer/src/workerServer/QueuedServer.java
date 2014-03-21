@@ -15,40 +15,42 @@ import edu.harvard.cs262.ComputeServer.WorkTask;
 
 public class QueuedServer implements ComputeServer, WorkQueue {
 
-	private Hashtable<UUID, ComputeServer> workers;
-	private LinkedList<UUID> freeWorkers, busyWorkers;
-	
-	private QueuedServer(){
-		super();
-		workers = new Hashtable<UUID, ComputeServer>();
-		freeWorkers = new LinkedList<UUID>();
-		busyWorkers = new LinkedList<UUID>();
-	}
-	
-	@Override
-	public UUID registerWorker(ComputeServer server) throws RemoteException {
-		UUID key = UUID.randomUUID();
-		workers.put(key, server);
-		freeWorkers.add(key);
-		return key;
-	}
+    private Hashtable<UUID, ComputeServer> workers;
+    private LinkedList<UUID> freeWorkers, busyWorkers;
 
-	@Override
-	public boolean unregisterWorker(UUID workerID) throws RemoteException{
-        /* If worker is busy then we wait. */
+    private QueuedServer(){
+        super();
+        workers = new Hashtable<UUID, ComputeServer>();
+        freeWorkers = new LinkedList<UUID>();
+        busyWorkers = new LinkedList<UUID>();
+    }
 
-		if (null == workers.get(workerID)){
-			return true;
-		}
-		
-		workers.remove(workerID);
-		freeWorkers.remove(workerID);
-		busyWorkers.remove(workerID);
-		return true;
-	}
-		
-	@Override
-	public Object sendWork(WorkTask work) throws RemoteException {
+    @Override
+    public UUID registerWorker(ComputeServer server) throws RemoteException {
+        UUID key = UUID.randomUUID();
+        workers.put(key, server);
+        freeWorkers.add(key);
+        return key;
+    }
+
+    @Override
+    public boolean unregisterWorker(UUID workerID) throws RemoteException{
+        /* TODO We to enact some policy in the case that the worker is busy
+         * Dead simple suggestion is just to wait until it's done and then
+         * remove it from the queue.  */
+
+        if (null == workers.get(workerID)){
+            return true;
+        }
+
+        workers.remove(workerID);
+        freeWorkers.remove(workerID);
+        busyWorkers.remove(workerID);
+        return true;
+    }
+
+    @Override
+    public Object sendWork(WorkTask work) throws RemoteException {
         /* Gets one of the things on the queue, and sends work to it */
 
         /* TODO Custom java exception on trying to remove a freeworker that
@@ -61,32 +63,34 @@ public class QueuedServer implements ComputeServer, WorkQueue {
         busyWorkers.remove(workerID);
         freeWorkers.add(workerID);
 
-		return response;
-	}
+        return response;
+    }
 
-	@Override
-	public boolean PingServer() throws RemoteException {
-		return true;
-	}
+    @Override
+    public boolean PingServer() throws RemoteException {
+        return true;
+    }
 
     public static void main(String args[]){
-        /* Variable port so we can have multiple workers on a single machine */
-        int port = 1099;
-        String queuedHostname = "rinchiera.com";
+
+        int port        = 1099; // Port this server is running on
+        String hostname = "rinchiera.com"; // Hostname this server is running on
 
         try {
-            System.setProperty("java.security.policy", "security.policy");
 
+            /* This policy is very unsafe */
+            System.setProperty("java.security.policy", "security.policy");
             if (System.getSecurityManager()==null){
                 System.setSecurityManager(new SecurityManager());
             }
 
-            QueuedServer mySrv = new QueuedServer();
-            WorkQueue stub = (WorkQueue) UnicastRemoteObject.exportObject(mySrv, 0);
+            /* Make server availible to clients and compute servers */
+            QueuedServer queuedServer = new QueuedServer();
+            WorkQueue stub = (WorkQueue) UnicastRemoteObject.exportObject(queuedServer, 0);
             Registry registry = LocateRegistry.createRegistry(port);
             registry.bind("QueuedServer", stub);
 
-            System.out.println("Ready to rock.");
+            System.out.println("WorkQueue is ready.");
 
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());

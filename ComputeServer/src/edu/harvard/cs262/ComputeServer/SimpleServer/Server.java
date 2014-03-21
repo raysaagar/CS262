@@ -13,69 +13,70 @@ import edu.harvard.cs262.ComputeServer.WorkTask;
 
 public class Server implements ComputeServer {
 
-	private static final long serialVersionUID = 1L;
-	public Server(){
-		super();
-	}
-	
-	@Override
-	public Object sendWork(WorkTask work) throws RemoteException {
-		return work.doWork();
-	}
-	
-	public static void main(String args[]){
+    private static final long serialVersionUID = 1L;
+    public Server(){
+        super();
+    }
+
+    @Override
+    public Object sendWork(WorkTask work) throws RemoteException {
+        return work.doWork();
+    }
+
+    public static void main(String args[]){
+
+        int port              = 1100; // Port this server is running on
+        String queuedHostname = "rinchiera.com"; // Hostname of WorkQueue
+        int queuedPort        = 1099; // Port of WorkQueue
+        Registry registry     = null; // Necessary for Compile
+
+
         /* Variable port so we can have multiple workers on a single machine */
-        String port = args[0];
-        String queuedHostname = "rinchiera.com";
-        int queuedPort = 1100;
+        if(args.length > 0) {
+            port = Integer.parseInt(args[0]);
+        }
+
+        /* If WorkQueue is being operated by a different group */
+        if(args.length > 1) {
+            queuedHostname = args[1];
+        }
 
         try {
 
+            /* This policy is very unsafe */
             System.setProperty("java.security.policy", "security.policy");
-
             if (System.getSecurityManager()==null){
                 System.setSecurityManager(new SecurityManager());
             }
 
+            /* This stub is sent to the WorkQueue */
+            Server computeServer = new Server();
+            ComputeServer stub = (ComputeServer)UnicastRemoteObject.exportObject(computeServer, 0);
 
-
-            Server mySrv = new Server();
-            ComputeServer stub = (ComputeServer)UnicastRemoteObject.exportObject(mySrv, 0);
-
-            /* First we set up our registry */
-            /*
-            Registry registry = LocateRegistry.createRegistry(port);
-            registry.bind("SimpleServer", stub);
-            */
-
-            /* Next, we try to contact other queue server's registry */
-            String name = "QueuedServer";
-            // hack to force compile
-            Registry registry = null;
             try {
-            	registry = LocateRegistry.getRegistry(queuedHostname, queuedPort);
+                registry = LocateRegistry.getRegistry(queuedHostname, queuedPort);
             }
             catch (Exception e) {
-            	System.out.println("Unable to connect to queue server " + queuedHostname + ":" + port);
-            	System.out.println(e);
+                System.out.println("Unable to connect to WorkQueue server " + queuedHostname + ":" + port);
+                System.out.println(e);
             }
 
-            WorkQueue workQueue = (WorkQueue) registry.lookup(name);
+            String workQueueRegistryName = "QueuedServer";
+            WorkQueue workQueue = (WorkQueue) registry.lookup(workQueueRegistryName);
             UUID response = (UUID) workQueue.registerWorker(stub);
 
-            System.out.println(response);
+            System.out.println("Registered to WorkQueue with ID: " + response);
 
 
         } catch (Exception e) {
-            System.err.println("Client exception: " + e.toString());
+            System.err.println("CompterServer exception: " + e.toString());
             e.printStackTrace();
         }
     }
 
-	@Override
-	public boolean PingServer() throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+    @Override
+    public boolean PingServer() throws RemoteException {
+        // TODO Auto-generated method stub
+        return true;
+    }
 }
