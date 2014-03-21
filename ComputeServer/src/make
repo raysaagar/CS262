@@ -41,7 +41,7 @@ elif [ "$1" == queue ]; then
         javac -cp compute.jar workerServer/QueuedServer.java
     fi
 
-    java -Djava.rmi.server.hostname=rinchiera.com workerServer/QueuedServer.java
+    java -Djava.rmi.server.hostname=rinchiera.com workerServer/QueuedServer
 
 
 fi
