@@ -51,11 +51,13 @@ public class QueuedServer implements ComputeServer, WorkQueue {
 	public Object sendWork(WorkTask work) throws RemoteException {
         /* Gets one of the things on the queue, and sends work to it */
 
-        //ComputeServer worker = freeWorkers.remove();
+        UUID workerID = freeWorkers.remove();
+        busyWorkers.add(workerID);
 
+        ComputeServer worker = workers.get(workerID);
+        String response = (String) worker.sendWork(work);
 
-		// TODO Auto-generated method stub
-		return null;
+		return response;
 	}
 
 	@Override
