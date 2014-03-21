@@ -5,6 +5,10 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.UUID;
 
+import java.rmi.server.UnicastRemoteObject;
+import java.rmi.registry.Registry;
+import java.rmi.registry.LocateRegistry;
+
 import edu.harvard.cs262.ComputeServer.ComputeServer;
 import edu.harvard.cs262.ComputeServer.WorkQueue;
 import edu.harvard.cs262.ComputeServer.WorkTask;
@@ -58,5 +62,32 @@ public class QueuedServer implements ComputeServer, WorkQueue {
 	public boolean PingServer() throws RemoteException {
 		return true;
 	}
+
+
+    public static void main(String args[]){
+        /* Variable port so we can have multiple workers on a single machine */
+        int port = 1099;
+        String queuedHostname = "rinchiera.com";
+
+        try {
+            System.setProperty("java.security.policy", "security.policy");
+
+            if (System.getSecurityManager()==null){
+                System.setSecurityManager(new SecurityManager());
+            }
+
+            QueuedServer mySrv = new QueuedServer();
+            WorkQueue stub = (WorkQueue) UnicastRemoteObject.exportObject(mySrv, 0);
+            Registry registry = LocateRegistry.createRegistry(port);
+            registry.bind("QueuedServer", stub);
+
+            System.out.println("Ready to rock.");
+
+        } catch (Exception e) {
+            System.err.println("Client exception: " + e.toString());
+            e.printStackTrace();
+        }
+    }
+
 
 }
