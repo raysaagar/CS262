@@ -31,6 +31,8 @@ public class QueuedServer implements ComputeServer, WorkQueue {
 
 	@Override
 	public boolean unregisterWorker(UUID workerID) throws RemoteException{
+        /* If worker is busy then we wait. */
+
 		if (null == workers.get(workerID)){
 			return true;
 		}
@@ -43,6 +45,11 @@ public class QueuedServer implements ComputeServer, WorkQueue {
 		
 	@Override
 	public Object sendWork(WorkTask work) throws RemoteException {
+        /* Gets one of the things on the queue, and sends work to it */
+
+        //ComputeServer worker = freeWorkers.remove();
+
+
 		// TODO Auto-generated method stub
 		return null;
 	}

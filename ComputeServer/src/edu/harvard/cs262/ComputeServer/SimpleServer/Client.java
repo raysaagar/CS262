@@ -16,7 +16,6 @@ public class Client {
 
 	public static void main(String[] args) {
         String hostname = args[0];
-//		int port = Integer.parseInt(args[1]);
         int port = 1099;
 
 		// TODO Auto-generated method stub
@@ -43,13 +42,13 @@ public class Client {
             System.out.println("Success!");
 
             WorkTask work = new HelloTask("Hello");
+            System.out.println("Sending work to server...");
             String response = (String) comp.sendWork(work);
-            System.out.println(response);
+            System.out.println("Response: " + response);
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
             e.printStackTrace();
         }
 
 	}
-
 }
