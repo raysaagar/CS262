@@ -51,11 +51,15 @@ public class QueuedServer implements ComputeServer, WorkQueue {
 	public Object sendWork(WorkTask work) throws RemoteException {
         /* Gets one of the things on the queue, and sends work to it */
 
+        /* TODO Custom java exception on trying to remove a freeworker that
+         * says "hey, no more workers sry." */
         UUID workerID = freeWorkers.remove();
         busyWorkers.add(workerID);
-
         ComputeServer worker = workers.get(workerID);
         String response = (String) worker.sendWork(work);
+
+        busyWorkers.remove(workerID);
+        freeWorkers.add(workerID);
 
 		return response;
 	}
@@ -64,7 +68,6 @@ public class QueuedServer implements ComputeServer, WorkQueue {
 	public boolean PingServer() throws RemoteException {
 		return true;
 	}
-
 
     public static void main(String args[]){
         /* Variable port so we can have multiple workers on a single machine */
@@ -90,6 +93,4 @@ public class QueuedServer implements ComputeServer, WorkQueue {
             e.printStackTrace();
         }
     }
-
-
 }

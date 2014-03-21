@@ -26,7 +26,7 @@ public class Client {
 		}
 
 		 try {
-            String name = "SimpleServer";
+            String name = "QueuedServer";
             // hack to force compile
             Registry registry = null;
             try {

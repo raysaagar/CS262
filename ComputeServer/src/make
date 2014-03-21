@@ -43,5 +43,4 @@ elif [ "$1" == queue ]; then
 
     java -Djava.rmi.server.hostname=rinchiera.com workerServer/QueuedServer
 
-
 fi
