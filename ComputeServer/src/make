@@ -34,7 +34,7 @@ elif [ "$1" == server ]; then
         javac -cp compute.jar edu/harvard/cs262/ComputeServer/SimpleServer/Server.java
     fi
 
-    java -Djava.rmi.server.hostname=rinchiera.com edu/harvard/cs262/ComputeServer/SimpleServer/Server
+    java -Djava.rmi.server.hostname=rinchiera.com -Djava.rmi.server.codebase=compute.jar edu/harvard/cs262/ComputeServer/SimpleServer/Server
 
 elif [ "$1" == queue ]; then
     if [ "$compiled" = false ]; then

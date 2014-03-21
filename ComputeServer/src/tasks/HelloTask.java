@@ -13,6 +13,13 @@ public class HelloTask implements WorkTask, Serializable {
     }
 
     public Object doWork() {
-        return this.str + " world!";
+        try {
+            System.out.println("hey god");
+            Thread.sleep(5000);
+        } catch(InterruptedException e) {
+            System.out.println("hey boom");
+        }
+
+        return this.str + " universe!";
     }
 }
