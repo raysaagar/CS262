@@ -57,7 +57,7 @@ public class Server implements ComputeServer {
                 registry = LocateRegistry.getRegistry(queuedHostname, queuedPort);
             }
             catch (Exception e) {
-                System.out.println("Unable to connect to WorkQueue server " + queuedHostname + ":" + port);
+                System.out.println("Unable to connect to WorkQueue server " + queuedHostname + ":" + queuedPort);
                 System.out.println(e);
             }
 
