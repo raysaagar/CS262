@@ -57,11 +57,6 @@ public class QueuedServer implements ComputeServer, WorkQueue {
     public Object sendWork(WorkTask work) throws RemoteException {
         /* Gets one of the things on the queue, and sends work to it */
 
-        /* TODO Custom java exception on trying to remove a freeworker that
-         * says "hey, no more workers sry." */
-
-
-
         /* We want to wait for workers */
         lock.lock();
         while (freeWorkers.size() == 0) {
