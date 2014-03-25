@@ -9,6 +9,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import edu.harvard.cs262.ComputeServer.ComputeServer;
 import edu.harvard.cs262.ComputeServer.WorkQueue;
 import edu.harvard.cs262.ComputeServer.WorkTask;
@@ -17,6 +20,7 @@ public class QueuedServer implements ComputeServer, WorkQueue {
 
     private Hashtable<UUID, ComputeServer> workers;
     private LinkedList<UUID> freeWorkers, busyWorkers;
+    private final Lock lock = new ReentrantLock();
 
     private QueuedServer(){
         super();
@@ -55,7 +59,24 @@ public class QueuedServer implements ComputeServer, WorkQueue {
 
         /* TODO Custom java exception on trying to remove a freeworker that
          * says "hey, no more workers sry." */
+
+
+
+        /* We want to wait for workers */
+        lock.lock();
+        while (freeWorkers.size() == 0) {
+            lock.unlock();
+            try {
+                Thread.sleep(2000);
+            } catch(InterruptedException ex) {
+               Thread.currentThread().interrupt();
+            }
+            lock.lock();
+        }
+
         UUID workerID = freeWorkers.remove();
+        lock.unlock();
+
         busyWorkers.add(workerID);
         ComputeServer worker = workers.get(workerID);
         Object response = worker.sendWork(work);
