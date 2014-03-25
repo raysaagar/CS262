@@ -58,7 +58,7 @@ public class QueuedServer implements ComputeServer, WorkQueue {
         UUID workerID = freeWorkers.remove();
         busyWorkers.add(workerID);
         ComputeServer worker = workers.get(workerID);
-        response = worker.sendWork(work);
+        Object response = worker.sendWork(work);
 
         busyWorkers.remove(workerID);
         freeWorkers.add(workerID);
