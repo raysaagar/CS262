@@ -25,7 +25,7 @@ public class Server implements ComputeServer {
 
     public static void main(String args[]){
 
-        int port              = 1100; // Port this server is running on
+        int port              = 1099; // Port this server is running on
         String queuedHostname = "rinchiera.com"; // Hostname of WorkQueue
         int queuedPort        = 1099; // Port of WorkQueue
         Registry registry     = null; // Necessary for Compile
