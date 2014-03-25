@@ -3,6 +3,7 @@ package edu.harvard.cs262.ComputeServer.SimpleServer;
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
 
+import tasks.Return50;
 import tasks.HelloTask;
 
 import edu.harvard.cs262.ComputeServer.ComputeServer;
@@ -44,7 +45,7 @@ public class Client {
             String name = "QueuedServer";
             ComputeServer comp = (ComputeServer) registry.lookup(name);
 
-            WorkTask work = new HelloTask("Hello");
+            WorkTask work = new Return50("Hello");
             System.out.println("Sending work to server...");
             String response = (String) comp.sendWork(work);
             System.out.println("Response: " + response);
