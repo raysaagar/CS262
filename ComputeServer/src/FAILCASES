@@ -1,1 +1,1 @@
-1) WorkServer goes out ever. Even if it's not excecuting a task
+1) If a work server goes while it's excecuting a task, we lose the task.

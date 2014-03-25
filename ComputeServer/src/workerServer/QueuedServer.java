@@ -57,7 +57,9 @@ public class QueuedServer implements ComputeServer, WorkQueue {
     public Object sendWork(WorkTask work) throws RemoteException {
         /* Gets one of the things on the queue, and sends work to it */
 
-        /* We want to wait for workers */
+        /* We want to wait for workers. Our lock prevents synchronization
+         * issues around multiple threads trying to modify free worker queue.
+         * */
         lock.lock();
         while (freeWorkers.size() == 0) {
             lock.unlock();
@@ -67,6 +69,15 @@ public class QueuedServer implements ComputeServer, WorkQueue {
                Thread.currentThread().interrupt();
             }
             lock.lock();
+
+            /* If we can't ping the server, then it's down and we shoudln't
+             * send it work. TODO what if it's "down" but it just stalls. We
+             * should catch timeouts... */
+            try {
+                freeWorkers.peek().pingServer();
+            } catch (Exception e) {
+                freeWorkers.remove();
+            }
         }
 
         UUID workerID = freeWorkers.remove();

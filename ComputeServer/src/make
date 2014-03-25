@@ -22,12 +22,16 @@ while getopts ":c" o; do
 done
 shift $((OPTIND-1))
 
+
+#WorkQueue rinchiera.com
+#ComputeServer 54.198.119.84
+#Client 75.101.199.253
 if [ "$1" == client ]; then
     if [ "$compiled" = false ]; then
         javac -cp compute.jar edu/harvard/cs262/ComputeServer/SimpleServer/Client.java
     fi
 
-    java edu/harvard/cs262/ComputeServer/SimpleServer/Client rinchiera.com
+    java -Djava.rmi.server.codebase=http://75.101.199.253/compute.jar edu/harvard/cs262/ComputeServer/SimpleServer/Client rinchiera.com
 
 elif [ "$1" == server ]; then
     if [ "$compiled" = false ]; then
