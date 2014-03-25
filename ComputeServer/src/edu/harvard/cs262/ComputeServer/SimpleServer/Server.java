@@ -76,7 +76,6 @@ public class Server implements ComputeServer {
 
     @Override
     public boolean PingServer() throws RemoteException {
-        // TODO Auto-generated method stub
         return true;
     }
 }
